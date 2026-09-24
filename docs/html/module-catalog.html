@@ -1,0 +1,419 @@
+<title>共通法モジュールカタログ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --paper:#faf9f6; --paper2:#f1efe9; --ink:#22303c; --ink2:#5a6a78;
+  --ai:#2d5f8a; --ai-soft:#eef3f7; --shu:#b0432c; --shu-soft:#f7ece8;
+  --line:#d9d5cc; --line2:#e8e5de;
+  --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --gothic:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141c26; --paper2:#1b2531; --ink:#e3e0d8; --ink2:#98a4b0;
+    --ai:#7fb0d8; --ai-soft:#1d2a38; --shu:#e08a71; --shu-soft:#32241f;
+    --line:#33404e; --line2:#26313d;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141c26; --paper2:#1b2531; --ink:#e3e0d8; --ink2:#98a4b0;
+  --ai:#7fb0d8; --ai-soft:#1d2a38; --shu:#e08a71; --shu-soft:#32241f;
+  --line:#33404e; --line2:#26313d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--gothic);line-height:1.8;font-size:15px}
+.wrap{max-width:840px;margin:0 auto;padding:0 22px 96px}
+header{padding:64px 0 20px;border-bottom:3px double var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.22em;color:var(--ai);font-weight:700;margin:0 0 14px}
+h1{font-family:var(--mincho);font-weight:700;font-size:clamp(26px,5vw,38px);line-height:1.4;margin:0 0 10px;text-wrap:balance}
+.lede{color:var(--ink2);max-width:44em;margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:26px 0 0}
+.stat{background:var(--paper);padding:13px 16px 10px}
+.stat b{display:block;font-family:var(--mincho);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ai)}
+.stat.warn b{color:var(--shu)}
+.stat span{font-size:12px;color:var(--ink2)}
+h2{font-family:var(--mincho);font-weight:600;font-size:21px;margin:56px 0 4px;text-wrap:balance}
+h2 .cnt{color:var(--shu);font-size:14px;font-variant-numeric:tabular-nums}
+.sub{font-size:13px;color:var(--ink2);margin:0 0 12px}
+details.item{border:1px solid var(--line);border-bottom:none;background:var(--paper)}
+details.item:last-of-type{border-bottom:1px solid var(--line)}
+details.item summary{cursor:pointer;padding:9px 14px;font-size:14px;line-height:1.7}
+details.item summary:hover{background:var(--paper2)}
+details.item summary:focus-visible{outline:2px solid var(--ai);outline-offset:-2px}
+details.item[open]{background:var(--paper2)}
+.mid{font-family:var(--mono);font-size:11.5px;color:var(--shu);letter-spacing:.03em}
+.nums{float:right;font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.body{padding:2px 18px 16px;border-top:1px solid var(--line2)}
+.sig{font-family:var(--mono);font-size:13px;color:var(--ai);margin:10px 0 8px}
+.variant{border-left:3px solid var(--line);padding:6px 14px;margin:8px 0;background:var(--paper)}
+.vmeta{font-size:11.5px;color:var(--ink2);margin:0 0 3px}
+.vtext{font-family:var(--mincho);font-size:14px;line-height:1.95;margin:0}
+.tablebox{overflow-x:auto;border:1px solid var(--line);margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.7}
+th{background:var(--paper2);font-weight:700;text-align:left;white-space:nowrap}
+th,td{padding:8px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+ul{padding-left:1.3em;margin:10px 0}
+li{margin:6px 0}
+li::marker{color:var(--ai)}
+footer{margin-top:72px;border-top:3px double var(--line);padding-top:16px;font-size:12.5px;color:var(--ink2)}
+</style>
+<div class="wrap">
+<header>
+  <p class="eyebrow">法令クローン検出｜2026-08-22</p>
+  <h1>共通法モジュールカタログ<br>——法体系のDRYリファクタリング素材集</h1>
+  <p class="lede">現行法律2,100本・96,780条を文単位でクローン検出し（可変部＝大臣名・条番号・金額等をマスクして正規化）、<b>8法以上に複製されている定型文619種</b>を機能別31モジュールに分類した。ソフトウェアでいえば「各ファイルにコピペされている関数を洗い出し、ライブラリに切り出す準備をした」状態。</p>
+  <div class="stats">
+    <div class="stat"><b>619</b><span>クローン文（8法以上に複製）</span></div>
+    <div class="stat"><b>31</b><span>機能モジュール</span></div>
+    <div class="stat warn"><b>78%</b><span>いずれかのモジュールを含む法律（1,542/1,985法）</span></div>
+    <div class="stat warn"><b>920<span style="font-size:14px">法</span></b><span>罰則定型の複製先（最大モジュール）</span></div>
+  </div>
+</header>
+
+<h2>サマリ：切り出し候補の全体像</h2>
+<div class="tablebox"><table>
+<tr><th>提案する共通法</th><th>収容モジュール</th><th>波及法令数</th><th>既存の土台</th></tr>
+<tr><td><b>行政制裁法</b></td><td>罰則本体・過料・両罰・守秘義務罰・没収追徴・賄賂・国外犯・自首減免</td><td class="num">1,084</td><td>刑法総則（but行政罰定型は未収容）</td></tr>
+<tr><td><b>行政調査法</b></td><td>立入検査・犯罪捜査解釈禁止・身分証提示・報告徴収・みなし公務員</td><td class="num">929</td><td>なし（韓国には行政調査基本法が存在）</td></tr>
+<tr><td>参照機構の機械可読化</td><td>読み替え適用表</td><td class="num">729</td><td>e-LAWS（溶け込みの自動化が未整備）</td></tr>
+<tr><td>行政手続法の拡張</td><td>聴聞・審査請求特例・届出定型</td><td class="num">572</td><td>行政手続法・行政不服審査法</td></tr>
+<tr><td>公示・公表法</td><td>官報公示・公表義務・備置閲覧</td><td class="num">562</td><td>官報発行法（2023）が入口</td></tr>
+<tr><td><b>法令用語法</b></td><td>電磁的記録等の定義・定義柱書</td><td class="num">500</td><td>デジタル手続法（射程が行政手続のみ）</td></tr>
+<tr><td>権限委任法</td><td>地方支分部局委任・知事委任</td><td class="num">363</td><td>地方自治法（機関委任廃止後の再整理）</td></tr>
+<tr><td>独法通則法への一本化</td><td>機構設立定型</td><td class="num">345</td><td>独立行政法人通則法</td></tr>
+<tr><td>指定法人共通法</td><td>指定試験機関・登録機関等の統治</td><td class="num">195</td><td>なし</td></tr>
+<tr><td>法人清算共通法</td><td>清算手続パッケージ</td><td class="num">174</td><td>一般法人法・会社法</td></tr>
+</table></div>
+
+<h2>DRY違反の「実物」：同一機能・12変種</h2>
+<p class="sub">同じ機能なのに表記が揺れている実例。身分証提示モジュール（M10・516法）には「関係人／関係者」「これを提示／提示」「請求があるとき／あつたとき」等の変種が12種、犯罪捜査解釈禁止（M09・584法）には「解してはならない」162法 vs 「解釈してはならない」128法という二大方言が併存する。機能は同一、実装がコピペで分岐した——ソフトウェアなら即リファクタリング対象。</p>
+
+<section>
+<h2>行政制裁法 <span class="cnt">1084法に波及</span></h2>
+<p class="sub">罰則・過料・両罰・没収追徴・国外犯・自首減免の定型。各法に残るのは「どの義務違反に、どの水準の刑を割り当てるか」の対応表だけでよい。刑法総則が既に共通部分を持つが、行政罰の定型はコピペのまま。</p>
+<details class="item" id="M08">
+<summary><span class="mid">M08</span> <b>罰則本体（拘禁刑・罰金・併科）</b>
+<span class="nums">920法・4,164箇所・変種30</span></summary>
+<div class="body">
+<p class="sig">罰則(対象行為, 法定刑) — 各法に残すのは対応表のみ</p>
+<div class="variant"><p class="vmeta">134法に複製｜例: 企業再建整備法 第五十六条、昭和二十二年法律第五十四号（私的独占の禁止及び公正取引の確保に関する法律） 第九十四条</p><p class="vtext">次の各号のいずれかに該当する者は、三年以下の拘禁刑又は三万円以下の罰金に処する。</p></div><div class="variant"><p class="vmeta">102法に複製｜例: 担保付社債信託法 第六十八条、金融機関の信託業務の兼営等に関する法律 第十五条の二</p><p class="vtext">次の各号のいずれかに該当する者は、三年以下の拘禁刑若しくは三百万円以下の罰金に処し、又はこれを併科する。</p></div><div class="variant"><p class="vmeta">93法に複製｜例: 金融商品取引法 第二百五条の二の二、公認会計士法 第五十三条</p><p class="vtext">次の各号のいずれかに該当する場合には、当該違反行為をした者は、五十万円以下の罰金に処する。</p></div>
+</div>
+</details>
+<details class="item" id="M07">
+<summary><span class="mid">M07</span> <b>過料</b>
+<span class="nums">572法・926箇所・変種12</span></summary>
+<div class="body">
+<p class="sig">過料(対象行為, 上限額)</p>
+<div class="variant"><p class="vmeta">57法に複製｜例: 船舶安全法 第二十五条の四十五、森林保険法 第十九条</p><p class="vtext">次の各号のいずれかに該当する場合には、その違反行為をした機構の役員は、二十万円以下の過料に処する。</p></div><div class="variant"><p class="vmeta">18法に複製｜例: 食品衛生法 第八十九条、消防法 第四十六条の三</p><p class="vtext">第三十九条第一項の規定に違反して財務諸表等を備えて置かず、財務諸表等に記載すべき事項を記載せず、若しくは虚偽の記載をし、又は正当な理由がないのに同条第二項各号の規定による請求を拒んだ者は、二十万円以下の過料に処する。</p></div><div class="variant"><p class="vmeta">14法に複製｜例: 貿易保険法 第八十一条、電子情報処理組織による輸出入等関連業務の処理等に関する法律 第二十七条</p><p class="vtext">次の各号のいずれかに該当する場合には、その違反行為をした会社の取締役、執行役、会計参与若しくはその職務を行うべき社員又は監査役は、百万円以下の過料に処する。</p></div>
+</div>
+</details>
+<details class="item" id="M01">
+<summary><span class="mid">M01</span> <b>両罰規定</b>
+<span class="nums">542法・581箇所・変種10</span></summary>
+<div class="body">
+<p class="sig">両罰(対象条文リスト, 法人重科の有無)</p>
+<div class="variant"><p class="vmeta">23法に複製｜例: 中小企業支援法 第二十三条、中小小売商業振興法 第十六条</p><p class="vtext">法人の代表者又は法人若しくは人の代理人、使用人その他の従業者が、その法人又は人の業務に関し、前項の違反行為をしたときは、行為者を罰するほか、その法人又は人に対して同項の刑を科する。</p></div><div class="variant"><p class="vmeta">21法に複製｜例: 食品衛生法 第八十八条、風俗営業等の規制及び業務の適正化等に関する法律 第五十七条</p><p class="vtext">法人の代表者又は法人若しくは人の代理人、使用人その他の従業者が、その法人又は人の業務に関し、次の各号に掲げる規定の違反行為をしたときは、行為者を罰するほか、その法人に対して当該各号に定める罰金刑を、その人に対して各本条の罰金刑を科する。</p></div><div class="variant"><p class="vmeta">16法に複製｜例: 製造委託等に係る中小受託事業者に対する代金の支払の遅延等の防止に関する法律 第十六条、小売商業調整特別措置法 第二十四条</p><p class="vtext">法人の代表者又は法人若しくは人の代理人、使用人その他の従業者が、その法人又は人の業務に関し、前二条の違反行為をしたときは、行為者を罰するほか、その法人又は人に対して各本条の刑を科する。</p></div>
+</div>
+</details>
+<details class="item" id="M06">
+<summary><span class="mid">M06</span> <b>秘密漏えい罪・守秘義務</b>
+<span class="nums">378法・826箇所・変種7</span></summary>
+<div class="body">
+<p class="sig">守秘義務(対象者, 罰則水準)</p>
+<div class="variant"><p class="vmeta">36法に複製｜例: 児童福祉法 第十八条の十二、あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第三条の十一</p><p class="vtext">）又はこれらの職にあつた者は、試験事務に関して知り得た秘密を漏らしてはならない。</p></div><div class="variant"><p class="vmeta">34法に複製｜例: 戸籍法 第百三十二条、貿易保険法 第七十九条</p><p class="vtext">第百二十一条の二の規定に違反して秘密を漏らし、又は盗用した者は、二年以下の拘禁刑又は百万円以下の罰金に処する。</p></div><div class="variant"><p class="vmeta">34法に複製｜例: 社会保険診療報酬支払基金法 第三十三条、災害対策基本法 第百十二条の二</p><p class="vtext">第二十条の規定に違反して秘密を漏らした者は、一年以下の拘禁刑又は百万円以下の罰金に処する。</p></div>
+</div>
+</details>
+<details class="item" id="M02">
+<summary><span class="mid">M02</span> <b>没収・追徴</b>
+<span class="nums">164法・774箇所・変種7</span></summary>
+<div class="body">
+<p class="sig">没収追徴(対象財産)</p>
+<div class="variant"><p class="vmeta">105法に複製｜例: 刑法 第百九十七条の五、船舶安全法 第二十五条の七十一</p><p class="vtext">その全部又は一部を没収することができないときは、その価額を追徴する。</p></div><div class="variant"><p class="vmeta">21法に複製｜例: 金融機関の信託業務の兼営等に関する法律 第二十五条、農業協同組合法 第百四条</p><p class="vtext">）に帰属する場合において、当該第三者が被告事件の手続への参加を許されていないときは、没収の裁判をすることができない。</p></div><div class="variant"><p class="vmeta">20法に複製｜例: 金融機関の信託業務の兼営等に関する法律 第二十五条、農業協同組合法 第百四条</p><p class="vtext">第一項及び第二項に規定する財産の没収に関する手続については、この法律に特別の定めがあるもののほか、刑事事件における第三者所有物の没収手続に関する応急措置法（昭和三十八年法律第百三十八号）の規定を準用する。</p></div>
+</div>
+</details>
+<details class="item" id="M05">
+<summary><span class="mid">M05</span> <b>賄賂罪</b>
+<span class="nums">75法・229箇所・変種4</span></summary>
+<div class="body">
+<p class="sig">賄賂罪(みなし公務員の範囲)</p>
+<div class="variant"><p class="vmeta">30法に複製｜例: 船舶安全法 第二十五条の七十二、中小企業投資育成株式会社法 第十四条</p><p class="vtext">前条第一項の賄賂を供与し、又はその申込み若しくは約束をした者は、三年以下の拘禁刑又は百万円以下の罰金に処する。</p></div><div class="variant"><p class="vmeta">12法に複製｜例: 中小企業投資育成株式会社法 第十三条、電子情報処理組織による輸出入等関連業務の処理等に関する法律 第二十二条</p><p class="vtext">会社の取締役、執行役、会計参与（会計参与が法人であるときは、その職務を行うべき社員）、監査役又は職員が、その職務に関して、賄賂を収受し、又はその要求若しくは約束をしたときは、三年以下の拘禁刑に処する。</p></div><div class="variant"><p class="vmeta">9法に複製｜例: 民間資金等の活用による公共施設等の整備等の促進に関する法律 第八十八条、株式会社産業再生機構法 第六十一条</p><p class="vtext">機構の取締役、会計参与（会計参与が法人であるときは、その職務を行うべき社員）、監査役又は職員が、その職務に関して、賄賂を収受し、又はその要求若しくは約束をしたときは、三年以下の拘禁刑に処する。</p></div>
+</div>
+</details>
+<details class="item" id="M03">
+<summary><span class="mid">M03</span> <b>国外犯適用</b>
+<span class="nums">70法・84箇所・変種3</span></summary>
+<div class="body">
+<p class="sig">国外犯(対象条文)</p>
+<div class="variant"><p class="vmeta">19法に複製｜例: 日本たばこ産業株式会社法 第十五条の二、金融機関等の更生手続の特例等に関する法律 第五百五十八条</p><p class="vtext">第十四条第一項の罪は、日本国外において同項の罪を犯した者にも適用する。</p></div><div class="variant"><p class="vmeta">8法に複製｜例: 健康保険法 第二百十三条の四、児童福祉法 第六十二条の三</p><p class="vtext">第二百七条の三の罪は、日本国外において同条の罪を犯した者にも適用する。</p></div><div class="variant"><p class="vmeta">8法に複製｜例: 昭和二十二年法律第五十四号（私的独占の禁止及び公正取引の確保に関する法律） 第九十四条の三、特許法 第二百条の三</p><p class="vtext">第一項の罪は、日本国外において同項の罪を犯した者にも適用する。</p></div>
+</div>
+</details>
+<details class="item" id="M04">
+<summary><span class="mid">M04</span> <b>自首減免</b>
+<span class="nums">62法・64箇所・変種1</span></summary>
+<div class="body">
+<p class="sig">自首減免(対象条文)</p>
+<div class="variant"><p class="vmeta">44法に複製｜例: 船舶安全法 第二十五条の七十二、建設業法 第四十六条</p><p class="vtext">前項の罪を犯した者が自首したときは、その刑を減軽し、又は免除することができる。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>行政調査法 <span class="cnt">929法に波及</span></h2>
+<p class="sub">立入検査・報告徴収・身分証提示・犯罪捜査解釈禁止・みなし公務員をワンセットで規定。各法は「誰が・何を・どの範囲で」のパラメータだけを定める。ドイツの行政手続法や韓国の行政調査基本法に相当する層が日本にはない。</p>
+<details class="item" id="M11">
+<summary><span class="mid">M11</span> <b>立入検査・質問</b>
+<span class="nums">686法・3,144箇所・変種4</span></summary>
+<div class="body">
+<p class="sig">立入検査(主体, 対象施設, 検査対象物件)</p>
+<div class="variant"><p class="vmeta">38法に複製｜例: 担保付社債信託法 第十六条、理容師法 第十三条</p><p class="vtext">第十条第二項及び第三項の規定は、前項の規定による立入検査について準用する。</p></div><div class="variant"><p class="vmeta">30法に複製｜例: 海上運送法 第五十二条、造船法 第三十六条</p><p class="vtext">第三十九条の三十七第一項の規定による報告をせず、若しくは虚偽の報告をし、又は同項の規定による検査を拒み、妨げ、若しくは忌避したとき。</p></div><div class="variant"><p class="vmeta">13法に複製｜例: 土地区画整理法 第七十二条、住宅地区改良法 第二十条</p><p class="vtext">土地の占有者は、正当な理由がない限り、第一項の規定による立入りを拒み、又は妨げてはならない。</p></div>
+</div>
+</details>
+<details class="item" id="M09">
+<summary><span class="mid">M09</span> <b>犯罪捜査解釈禁止</b>
+<span class="nums">584法・782箇所・変種13</span></summary>
+<div class="body">
+<p class="sig">犯罪捜査解釈禁止() — 引数なしの完全定型</p>
+<div class="variant"><p class="vmeta">162法に複製｜例: 担保付社債信託法 第十条、国家公務員法 第十七条</p><p class="vtext">第一項の規定による立入検査の権限は、犯罪捜査のために認められたものと解してはならない。</p></div><div class="variant"><p class="vmeta">128法に複製｜例: 船舶安全法 第二十五条の四十、労働者災害補償保険法 第四十八条</p><p class="vtext">第一項の規定による立入検査の権限は、犯罪捜査のために認められたものと解釈してはならない。</p></div><div class="variant"><p class="vmeta">48法に複製｜例: 健康保険法 第七条の三十八、児童福祉法 第十八条の七</p><p class="vtext">第一項の規定による権限は、犯罪捜査のために認められたものと解釈してはならない。</p></div>
+</div>
+</details>
+<details class="item" id="M10">
+<summary><span class="mid">M10</span> <b>身分証明書の携帯・提示</b>
+<span class="nums">516法・739箇所・変種12</span></summary>
+<div class="body">
+<p class="sig">身分証提示(様式) — 「関係人／関係者」「請求があるとき」等12変種が516法に</p>
+<div class="variant"><p class="vmeta">63法に複製｜例: 担保付社債信託法 第十条、労働者災害補償保険法 第四十八条</p><p class="vtext">前項の規定により立入検査をする職員は、その身分を示す証明書を携帯し、関係者に提示しなければならない。</p></div><div class="variant"><p class="vmeta">42法に複製｜例: 郵便法 第六十五条、私立学校法 第百三十六条</p><p class="vtext">前項の規定により立入検査をする職員は、その身分を示す証明書を携帯し、関係人にこれを提示しなければならない。</p></div><div class="variant"><p class="vmeta">30法に複製｜例: 海上運送法 第三十九条の三十七、造船法 第三十二条</p><p class="vtext">前項の規定により立入検査をする職員は、その身分を示す証明書を携帯し、関係人に提示しなければならない。</p></div>
+</div>
+</details>
+<details class="item" id="M12">
+<summary><span class="mid">M12</span> <b>報告徴収・虚偽報告</b>
+<span class="nums">476法・984箇所・変種3</span></summary>
+<div class="body">
+<p class="sig">報告徴収(対象者, 事項)</p>
+<div class="variant"><p class="vmeta">52法に複製｜例: 食品衛生法 第八十六条、航路標識法 第四十三条</p><p class="vtext">第四十七条第一項の規定による報告をせず、又は虚偽の報告をしたとき。</p></div><div class="variant"><p class="vmeta">12法に複製｜例: 外国為替及び外国貿易法 第七十一条、建築士法 第四十条</p><p class="vtext">第五十五条の三第一項又は第二項の規定による報告をせず、又は虚偽の報告をしたとき。</p></div><div class="variant"><p class="vmeta">11法に複製｜例: 消費生活協同組合法 第九十九条の四、船主相互保険組合法 第五十八条の四</p><p class="vtext">第二十六条第六項において準用する会社法第九百四十六条第三項の規定に違反して、報告をせず、又は虚偽の報告をした者
+              
+                正当な理由がないのに、第二十六条第六項において準用する会社法第九百五十一条第二項各号又は第九百五十五条第二項各号に掲げる請求を拒んだ者。</p></div>
+</div>
+</details>
+<details class="item" id="M13">
+<summary><span class="mid">M13</span> <b>みなし公務員</b>
+<span class="nums">259法・328箇所・変種3</span></summary>
+<div class="body">
+<p class="sig">みなし公務員(対象者)</p>
+<div class="variant"><p class="vmeta">47法に複製｜例: 地方税法 第七百八十一条、中小企業退職金共済法 第六十六条</p><p class="vtext">機構の役員及び職員は、刑法（明治四十年法律第四十五号）その他の罰則の適用については、法令により公務に従事する職員とみなす。</p></div><div class="variant"><p class="vmeta">25法に複製｜例: 児童福祉法 第十八条の十二、あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第三条の十一</p><p class="vtext">試験事務に従事する指定試験機関の役員又は職員は、刑法（明治四十年法律第四十五号）その他の罰則の適用については、法令により公務に従事する職員とみなす。</p></div><div class="variant"><p class="vmeta">11法に複製｜例: 独立行政法人酒類総合研究所法 第十一条、独立行政法人国立特別支援教育総合研究所法 第十一条</p><p class="vtext">研究所の役員及び職員は、刑法（明治四十年法律第四十五号）その他の罰則の適用については、法令により公務に従事する職員とみなす。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>公示・公表法 <span class="cnt">562法に波及</span></h2>
+<p class="sub">公示・公告・公表の方法（官報・ウェブ・掲示）とその効力発生を一元規定。媒体の技術更新（電子官報・国のウェブ公示基盤）を1法の改正で全法令に波及させられるようになる。</p>
+<details class="item" id="M16">
+<summary><span class="mid">M16</span> <b>官報公示・公表義務</b>
+<span class="nums">549法・1,475箇所・変種12</span></summary>
+<div class="body">
+<p class="sig">公示(方法=官報|ウェブ|掲示, 効力発生時期)</p>
+<div class="variant"><p class="vmeta">40法に複製｜例: 酪農及び肉用牛生産の振興に関する法律 第二条の二、廃棄物の処理及び清掃に関する法律 第五条の二</p><p class="vtext">農林水産大臣は、基本方針を定め、又はこれを変更したときは、遅滞なく、これを公表しなければならない。</p></div><div class="variant"><p class="vmeta">32法に複製｜例: 船舶安全法 第二十五条の六十二、食品衛生法 第四十五条</p><p class="vtext">国土交通大臣は、次の場合には、その旨を官報に公示しなければならない。</p></div><div class="variant"><p class="vmeta">26法に複製｜例: 医療法 第六条の二十六、自転車競技法 第三十六条</p><p class="vtext">厚生労働大臣は、前項の規定により指定を取り消したときは、その旨を公示しなければならない。</p></div>
+</div>
+</details>
+<details class="item" id="M22">
+<summary><span class="mid">M22</span> <b>財務諸表等の備置き・閲覧</b>
+<span class="nums">79法・150箇所・変種1</span></summary>
+<div class="body">
+<p class="sig">備置閲覧(書類, 場所) — 電子公表への一本化候補</p>
+<div class="variant"><p class="vmeta">30法に複製｜例: 船舶安全法 第二十五条の五十三、船員法 第八十三条の九</p><p class="vtext">財務諸表等が書面をもつて作成されているときは、当該書面の閲覧又は謄写の請求
+                
+                  前号の書面の謄本又は抄本の請求
+                
+                  財務諸表等が電磁的記録をもつて作成されているときは、当該電磁的記録に記録された事項を国土交通省令で定める方法によ</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>行政手続法の拡張 <span class="cnt">572法に波及</span></h2>
+<p class="sub">聴聞・審査請求の特例や届出定型は、既に行政手続法・行政不服審査法という共通法があるのに、各法が特例・再記述を重ねている層。共通法側のデフォルトを強くし、個別法の上書きを減らす方向。</p>
+<details class="item" id="M15">
+<summary><span class="mid">M15</span> <b>聴聞・審査請求の特例</b>
+<span class="nums">435法・2,630箇所・変種11</span></summary>
+<div class="body">
+<p class="sig">聴聞・審査請求特例(適用除外範囲)</p>
+<div class="variant"><p class="vmeta">36法に複製｜例: 外国為替及び外国貿易法 第五十六条、火薬類取締法 第五十五条</p><p class="vtext">第一項に規定する審査請求については、行政不服審査法第三十一条の規定は適用せず、同項の意見の聴取については、同条第二項から第五項までの規定を準用する。</p></div><div class="variant"><p class="vmeta">22法に複製｜例: 消費生活協同組合法 第九十五条の二、火薬類取締法 第五十四条</p><p class="vtext">前項の聴聞の主宰者は、行政手続法第十七条第一項の規定により当該処分に係る利害関係人が当該聴聞に関する手続に参加することを求めたときは、これを許可しなければならない。</p></div><div class="variant"><p class="vmeta">19法に複製｜例: あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第三条の二十、建設業法 第二十七条の十七</p><p class="vtext">この場合において、厚生労働大臣は、行政不服審査法（平成二十六年法律第六十八号）第二十五条第二項及び第三項、第四十六条第一項及び第二項、第四十七条並びに第四十九条第三項の規定の適用については、指定試験機関の上級行政庁とみなす。</p></div>
+</div>
+</details>
+<details class="item" id="M14">
+<summary><span class="mid">M14</span> <b>届出義務・変更届出（軽微除外）</b>
+<span class="nums">286法・568箇所・変種3</span></summary>
+<div class="body">
+<p class="sig">届出(事項, 軽微変更の除外)</p>
+<div class="variant"><p class="vmeta">68法に複製｜例: 消防法 第十七条の二の三、航路標識法 第十三条</p><p class="vtext">ただし、総務省令で定める軽微な変更については、この限りでない。</p></div><div class="variant"><p class="vmeta">50法に複製｜例: 会社経理応急措置法 第三十一条、農業保険法 第二百三十条</p><p class="vtext">第十七条第五項の規定による届出をせず、又は虚偽の届出をしたとき。</p></div><div class="variant"><p class="vmeta">8法に複製｜例: 麻薬及び向精神薬取締法 第七十二条、自然公園法 第八十六条</p><p class="vtext">第五十条の二十二第一項の規定に違反して、届出をせず、又は虚偽の届出をしたとき。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>法令用語法（デジタル手続法の拡張） <span class="cnt">500法に波及</span></h2>
+<p class="sub">「電磁的記録」「電磁的方法」等の共通定義を1箇所に置き、各法は参照するだけにする。デジタル関係用語が343法にローカル再定義されている現状は、デジタル改革のたびに全法改正が必要になる構造そのもの。</p>
+<details class="item" id="M18">
+<summary><span class="mid">M18</span> <b>電磁的記録・電磁的方法の定義</b>
+<span class="nums">343法・634箇所・変種1</span></summary>
+<div class="body">
+<p class="sig">電磁的記録・電磁的方法の定義() — 343法にローカル再定義</p>
+<div class="variant"><p class="vmeta">11法に複製｜例: 農業保険法 第五十三条、土地改良法 第二十九条の二</p><p class="vtext">前項の監事の意見書については、これに記載すべき事項を記録した電磁的記録（電子的方式、磁気的方式その他人の知覚によつては認識することができない方式で作られる記録であつて、電子計算機による情報処理の用に供されるものとして農林水産省令で定めるものをいう。</p></div>
+</div>
+</details>
+<details class="item" id="M17">
+<summary><span class="mid">M17</span> <b>定義規定の柱書</b>
+<span class="nums">234法・374箇所・変種5</span></summary>
+<div class="body">
+<p class="sig">定義柱書() — 用語集の構文定型</p>
+<div class="variant"><p class="vmeta">82法に複製｜例: 商法 第五百六十九条、国家公務員法 第三十四条</p><p class="vtext">この法律において、次の各号に掲げる用語の意義は、当該各号に定めるところによる。</p></div><div class="variant"><p class="vmeta">81法に複製｜例: 国家公務員宿舎法 第二条、旅券法 第二条</p><p class="vtext">この法律において、次の各号に掲げる用語の意義は、それぞれ当該各号に定めるところによる。</p></div><div class="variant"><p class="vmeta">14法に複製｜例: 農業協同組合法 第九十二条の六、水産業協同組合法 第百十八条</p><p class="vtext">この条において、次の各号に掲げる用語の意義は、当該各号に定めるところによる。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>権限委任法 <span class="cnt">363法に波及</span></h2>
+<p class="sub">大臣→地方支分部局長、国→都道府県知事への委任定型。委任の一般ルールと告示による特定へ。</p>
+<details class="item" id="M23">
+<summary><span class="mid">M23</span> <b>権限委任（地方支分部局）</b>
+<span class="nums">321法・455箇所・変種9</span></summary>
+<div class="body">
+<p class="sig">権限委任(委任先=地方支分部局)</p>
+<div class="variant"><p class="vmeta">61法に複製｜例: 健康保険法 第二百五条、船員保険法 第百五十三条の七</p><p class="vtext">前項の規定により地方厚生局長に委任された権限は、厚生労働省令で定めるところにより、地方厚生支局長に委任することができる。</p></div><div class="variant"><p class="vmeta">55法に複製｜例: あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第十三条の二、食品衛生法 第八十条</p><p class="vtext">この法律に規定する厚生労働大臣の権限は、厚生労働省令で定めるところにより、地方厚生局長に委任することができる。</p></div><div class="variant"><p class="vmeta">40法に複製｜例: 建設業法 第四十四条の三、水防法 第五十一条</p><p class="vtext">この法律に規定する国土交通大臣の権限は、国土交通省令で定めるところにより、その一部を地方整備局長又は北海道開発局長に委任することができる。</p></div>
+</div>
+</details>
+<details class="item" id="M24">
+<summary><span class="mid">M24</span> <b>都道府県知事等への事務委任</b>
+<span class="nums">69法・72箇所・変種1</span></summary>
+<div class="body">
+<p class="sig">事務委任(委任先=都道府県知事)</p>
+<div class="variant"><p class="vmeta">27法に複製｜例: 消費生活協同組合法 第九十七条の二、農産物検査法 第三十七条</p><p class="vtext">この法律に規定する厚生労働大臣の権限に属する事務の一部は、政令で定めるところにより、都道府県知事が行うこととすることができる。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>指定法人共通法 <span class="cnt">195法に波及</span></h2>
+<p class="sub">指定試験機関・登録検査機関・指定紛争解決機関などの「民間機関への行政事務委託」ガバナンス（指定基準・業務規程・役員認可・休廃止許可・監督命令・指定取消）を一般法化。37種の変種が195法に散在。</p>
+<details class="item" id="M20">
+<summary><span class="mid">M20</span> <b>指定試験機関・登録機関・紛争解決機関の統治</b>
+<span class="nums">195法・3,602箇所・変種37</span></summary>
+<div class="body">
+<p class="sig">指定法人制度(指定基準, 業務規程, 監督措置)</p>
+<div class="variant"><p class="vmeta">30法に複製｜例: 船舶安全法 第二十五条の四十七、船員法 第百条の十二</p><p class="vtext">登録申請者の役員（持分会社（会社法第五百七十五条第一項に規定する持分会社をいう。</p></div><div class="variant"><p class="vmeta">27法に複製｜例: あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第三条の五、理容師法 第四条の六</p><p class="vtext">指定試験機関の役員の選任及び解任は、厚生労働大臣の認可を受けなければ、その効力を生じない。</p></div><div class="variant"><p class="vmeta">25法に複製｜例: あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第三条の十六、理容師法 第四条の十四</p><p class="vtext">指定試験機関は、厚生労働大臣の許可を受けなければ、試験事務の全部又は一部を休止し、又は廃止してはならない。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>法人清算共通法 <span class="cnt">174法に波及</span></h2>
+<p class="sub">特別法上の法人（組合・共済等）の清算手続が民法法人時代の条文のコピペで174法に残存。一般法人法・会社法の清算規定への参照に一本化。</p>
+<details class="item" id="M19">
+<summary><span class="mid">M19</span> <b>清算手続パッケージ</b>
+<span class="nums">174法・1,979箇所・変種13</span></summary>
+<div class="body">
+<p class="sig">法人清算(清算人選任, 債権申出公告, 除斥)</p>
+<div class="variant"><p class="vmeta">45法に複製｜例: 民法 第六百八十八条、地方自治法 第二百六十条の二十七</p><p class="vtext">現務の結了
+                  
+                    債権の取立て及び債務の弁済
+                  
+                    残余財産の引渡し
+                  
+
+                  清算人は、前項各号に掲げる職務を行うために必要な一切の行為をすることが</p></div><div class="variant"><p class="vmeta">42法に複製｜例: 農業協同組合法 第七十二条の三十八、農業保険法 第七十七条</p><p class="vtext">重要な事由があるときは、裁判所は、利害関係人若しくは検察官の請求により又は職権で、清算人を解任することができる。</p></div><div class="variant"><p class="vmeta">42法に複製｜例: 農業協同組合法 第七十二条の四十、農業保険法 第八十条</p><p class="vtext">清算人は、知れている債権者には、各別にその申出の催告をしなければならない。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>独法通則法への一本化 <span class="cnt">345法に波及</span></h2>
+<p class="sub">独立行政法人は通則法という共通法が既にあるのに、個別法が通則法との接続定型（役員・資本金・積立金・区分経理）を毎回書き直している。個別法設置スキームの見直し。</p>
+<details class="item" id="M21">
+<summary><span class="mid">M21</span> <b>独立行政法人・機構の設立定型</b>
+<span class="nums">345法・2,503箇所・変種23</span></summary>
+<div class="body">
+<p class="sig">独法設置(名称, 目的, 資本金, 区分経理)</p>
+<div class="variant"><p class="vmeta">71法に複製｜例: 国立研究開発法人情報通信研究機構法 第十条、独立行政法人酒類総合研究所法 第七条</p><p class="vtext">前項ただし書の場合において、通則法第十九条第二項の規定により理事長の職務を代理し又はその職務を行う監事は、その間、監事の職務を行ってはならない。</p></div><div class="variant"><p class="vmeta">34法に複製｜例: 中小企業退職金共済法 第八十条、公共用飛行場周辺における航空機騒音による障害の防止等に関する法律 第三十五条</p><p class="vtext">機構に係る通則法における主務大臣及び主務省令は、それぞれ厚生労働大臣及び厚生労働省令とする。</p></div><div class="variant"><p class="vmeta">29法に複製｜例: 特定住宅金融専門会社の債権債務の処理の促進等に関する特別措置法 第二十三条、独立行政法人国立青少年教育振興機構法 第五条</p><p class="vtext">機構は、前項の規定による政府の出資があったときは、その出資額により資本金を増加するものとする。</p></div>
+</div>
+</details>
+</section>
+<section>
+<h2>参照機構の機械可読化 <span class="cnt">729法に波及</span></h2>
+<p class="sub">「読み替え適用表」は共通化ではなく参照機構そのもののコスト。729法・4,760箇所の読み替え表は、機械可読な参照解決（溶け込み自動生成）が整えば大幅に圧縮できる。</p>
+<details class="item" id="M27">
+<summary><span class="mid">M27</span> <b>読み替え適用表</b>
+<span class="nums">729法・4,760箇所・変種6</span></summary>
+<div class="body">
+<p class="sig">読み替え表 — 参照機構のランタイムコスト</p>
+<div class="variant"><p class="vmeta">25法に複製｜例: 昭和二十二年法律第五十四号（私的独占の禁止及び公正取引の確保に関する法律） 第七条の九、職業安定法 第三十三条の三</p><p class="vtext">この場合において、次の表の上欄に掲げる規定中同表の中欄に掲げる字句は、それぞれ同表の下欄に掲げる字句に読み替えるものとする。</p></div><div class="variant"><p class="vmeta">14法に複製｜例: 農業協同組合法 第三十九条、金融商品取引法 第三十一条</p><p class="vtext">）」と読み替えるものとするほか、必要な技術的読替えは、政令で定める。</p></div><div class="variant"><p class="vmeta">11法に複製｜例: 医療法 第三十条の十八の四、一般職の職員の給与に関する法律 第十九条の七</p><p class="vtext">この場合において、同条第六項中「前項」とあるのは、「第三十条の十八の四第六項」と読み替えるものとする。</p></div>
+</div>
+</details>
+</section>
+
+<section>
+<h2>その他のモジュール</h2>
+<details class="item" id="M25">
+<summary><span class="mid">M25</span> <b>経過措置の命令委任</b>
+<span class="nums">322法・337箇所・変種5</span></summary>
+<div class="body">
+<p class="sig">経過措置委任()</p>
+<div class="variant"><p class="vmeta">155法に複製｜例: あん摩マツサージ指圧師、はり師、きゆう師等に関する法律 第十三条の三、理容師法 第十四条の三の二</p><p class="vtext">この法律の規定に基づき命令を制定し、又は改廃する場合においては、その命令で、その制定又は改廃に伴い合理的に必要と判断される範囲内において、所要の経過措置（罰則に関する経過措置を含む。</p></div><div class="variant"><p class="vmeta">25法に複製｜例: 消防法 第三十六条の四、港湾法 第六十条の三</p><p class="vtext">この法律の規定に基づき政令又は総務省令を制定し、又は改廃する場合においては、それぞれ、政令又は総務省令で、その制定又は改廃に伴い合理的に必要と判断される範囲内において、所要の経過措置（罰則に関する経過措置を含む。</p></div><div class="variant"><p class="vmeta">21法に複製｜例: 健康保険法 第二百六条、船員保険法 第百五十四条</p><p class="vtext">この法律に基づき命令を制定し、又は改廃する場合においては、その命令で、その制定又は改廃に伴い合理的に必要と判断される範囲内において、所要の経過措置（罰則に関する経過措置を含む。</p></div>
+</div>
+</details>
+<details class="item" id="M30">
+<summary><span class="mid">M30</span> <b>欠格条項</b>
+<span class="nums">286法・584箇所・変種7</span></summary>
+<div class="body">
+<p class="sig">欠格条項(拒否事由リスト)</p>
+<div class="variant"><p class="vmeta">23法に複製｜例: 産業標準化法 第四十条、植物防疫法 第十条の三</p><p class="vtext">次の各号のいずれかに該当する者は、登録を受けることができない。</p></div><div class="variant"><p class="vmeta">16法に複製｜例: 海上運送法 第三十九条の二十六、造船法 第十八条</p><p class="vtext">次の各号のいずれかに該当する者は、指定を受けることができない。</p></div><div class="variant"><p class="vmeta">10法に複製｜例: 通訳案内士法 第三十六条、旅行業法 第十二条の十三</p><p class="vtext">次の各号のいずれかに該当する者は、第三十条第一項の登録を受けることができない。</p></div>
+</div>
+</details>
+<details class="item" id="M26">
+<summary><span class="mid">M26</span> <b>政省令への包括委任（実施規定）</b>
+<span class="nums">219法・224箇所・変種8</span></summary>
+<div class="body">
+<p class="sig">実施規定委任(政令|省令)</p>
+<div class="variant"><p class="vmeta">27法に複製｜例: 公営住宅法 第五十三条、万国著作権条約の実施に伴う著作権法の特例に関する法律 第十二条</p><p class="vtext">この法律に定めるもののほか、この法律の実施のため必要な事項は、政令で定める。</p></div><div class="variant"><p class="vmeta">22法に複製｜例: 船員保険法 第百五十五条、農業保険法 第二百二十六条</p><p class="vtext">この法律に定めるもののほか、この法律の実施のための手続その他この法律の施行に関し必要な事項は、厚生労働省令で定める。</p></div><div class="variant"><p class="vmeta">18法に複製｜例: タクシー業務適正化特別措置法 第五十五条、特定外貿埠頭の管理運営に関する法律 第十六条</p><p class="vtext">この法律に定めるもののほか、この法律の実施のため必要な事項は、国土交通省令で定める。</p></div>
+</div>
+</details>
+<details class="item" id="M29">
+<summary><span class="mid">M29</span> <b>先取特権の順位</b>
+<span class="nums">212法・536箇所・変種5</span></summary>
+<div class="body">
+<p class="sig">先取特権順位(民法参照)</p>
+<div class="variant"><p class="vmeta">57法に複製｜例: 貿易保険法 第二十五条、奄美群島振興開発特別措置法 第五十五条</p><p class="vtext">前項の先取特権の順位は、民法（明治二十九年法律第八十九号）の規定による一般の先取特権に次ぐものとする。</p></div><div class="variant"><p class="vmeta">27法に複製｜例: 予防接種法 第十九条、特別児童扶養手当等の支給に関する法律 第二十四条</p><p class="vtext">前項の規定による徴収金の先取特権の順位は、国税及び地方税に次ぐものとする。</p></div><div class="variant"><p class="vmeta">10法に複製｜例: 自然公園法 第六十六条、地すべり等防止法 第三十八条</p><p class="vtext">この場合における負担金及び延滞金の先取特権の順位は、国税及び地方税に次ぐものとする。</p></div>
+</div>
+</details>
+<details class="item" id="M31">
+<summary><span class="mid">M31</span> <b>協議会・審議会の運営定型</b>
+<span class="nums">198法・377箇所・変種6</span></summary>
+<div class="body">
+<p class="sig">会議体運営(定足数, 議事録)</p>
+<div class="variant"><p class="vmeta">26法に複製｜例: 国土形成計画法 第十条、港湾法 第五十条の三</p><p class="vtext">前各項に定めるもののほか、協議会の運営に関し必要な事項は、協議会が定める。</p></div><div class="variant"><p class="vmeta">20法に複製｜例: 食品衛生法 第二十一条の三、教育公務員特例法 第二十二条の七</p><p class="vtext">前三項に定めるもののほか、協議会の運営に関し必要な事項は、協議会が定める。</p></div><div class="variant"><p class="vmeta">18法に複製｜例: 農業協同組合法 第四十六条の四、消費生活協同組合法 第四十五条</p><p class="vtext">総会の議事については、農林水産省令で定めるところにより、議事録を作成しなければならない。</p></div>
+</div>
+</details>
+<details class="item" id="M28">
+<summary><span class="mid">M28</span> <b>登記の対抗力</b>
+<span class="nums">115法・168箇所・変種4</span></summary>
+<div class="body">
+<p class="sig">登記対抗力()</p>
+<div class="variant"><p class="vmeta">28法に複製｜例: 船舶安全法 第二十五条の七、金融商品取引法 第七十九条の二十四</p><p class="vtext">前項の規定により登記しなければならない事項は、登記の後でなければ、これをもつて第三者に対抗することができない。</p></div><div class="variant"><p class="vmeta">15法に複製｜例: 健康保険法 第七条の七、更生保護事業法 第八条</p><p class="vtext">前項の規定により登記しなければならない事項は、登記の後でなければ、これをもって第三者に対抗することができない。</p></div><div class="variant"><p class="vmeta">12法に複製｜例: 公認会計士法 第三十四条の六、水先法 第五十条</p><p class="vtext">前項の規定により登記をしなければならない事項は、登記の後でなければ、これをもつて第三者に対抗することができない。</p></div>
+</div>
+</details>
+</section>
+
+<h2>実装アプローチ（現実的な移行経路）</h2>
+<ul>
+<li><b>参照方式（import）</b>: 新規立法から共通法参照を義務化。法制局の審査基準に「例文コピペ禁止・共通法○条を引用」のリンター規則を入れる。既存法は改正機会ごとに置換（strangler fig）。</li>
+<li><b>オーバーライド方式（デジタル手続法型）</b>: 個別法を書き換えずに「個別法の規定にかかわらず〜できる」と横断上書きする1本を通す。公示方法・電磁的記録定義はこの型が速い。</li>
+<li><b>テンプレートの機械可読化</b>: 例文（内閣法制局テンプレート）を法令XML上で「この文は共通テンプレ#Xのインスタンス」とアノテーションする。切り出し前でも、一括改正のコストが激減する。</li>
+</ul>
+
+<h2>留意</h2>
+<ul>
+<li>検出は正規化後の<b>完全一致</b>のみ。言い回しが少し違う実質的クローンは拾えていないため、ここの数字は<b>下限値</b>。</li>
+<li>罰則の法定刑や検査対象はモジュールの「引数」であり、共通化とは「引数だけを各法に残す」こと。実体的な差異を消す提案ではない。</li>
+<li>対象は法律のみ（政令・省令を含めれば複製規模はさらに大きい）。データは2025年5月版法令ミラー準拠。</li>
+</ul>
+
+<footer>
+生成: <code>scripts/clone_catalog.py</code>（文単位クローン検出）→ <code>scripts/curate_modules.py</code>（機能分類・再集計）→ 本ページ。
+機械可読データ: <code>results/clone_catalog.json</code>（619クローン文）・<code>results/module_catalog.json</code>（31モジュール）・<code>results/package_unions.json</code>。
+元データ: e-Gov法令XML（現行法律2,100本、<code>data/laws_xml.tar.gz</code>）。
+</footer>
+</div>

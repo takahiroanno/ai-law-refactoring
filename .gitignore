@@ -1,0 +1,7 @@
+data/laws/
+data/*.jsonl
+data/*.tmp
+data/summary.json
+data/laws_xml.tar.gz
+__pycache__/
+.DS_Store
