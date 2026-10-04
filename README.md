@@ -113,7 +113,7 @@ python3 scripts/build_module_catalog.py . docs/html/module-catalog.html
 
 ## 出典・ライセンス
 
-- 法令データ: e-Gov法令検索の全法令XML（法律のみ・2025年5月版）を、GitHubミラー [aluqas/gitlaw-jp](https://github.com/aluqas/gitlaw-jp) 経由で利用。法令の条文そのものは著作権の対象外（著作権法13条）です。
+- 法令データ: e-Gov法令検索の全法令XML（法律のみ・2025年5月版）を、GitHubミラー [39la/gitlaw-jp](https://github.com/39la/gitlaw-jp) 経由で利用。法令の条文そのものは著作権の対象外（著作権法13条）です。
 - コード・文書: [MIT License](LICENSE)。改正イメージ・判定理由・分類はLLMの生成物であり、正確性を保証するものではありません。
 
 国会・他党の議員の方、法制局・省庁の方で関心がある方はぜひご一報ください。連携しながら具体化を進めたいと考えています。
